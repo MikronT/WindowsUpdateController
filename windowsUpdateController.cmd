@@ -9,7 +9,7 @@ pause>nul
 
 :start
 call :logo
-echo.^(^!^) Запуск [ADSI] Windows Update Controller...
+echo.^(^!^) Запуск [MikronT] Windows Update Controller...
 >nul timeout /nobreak /t 1
 
 
@@ -118,10 +118,10 @@ exit /b
 
 
 :logo
-title [ADSI] Windows Update Controller
+title [MikronT] Windows Update Controller
 color 0b
 cls
 echo.
-echo.    [ADSI] ==^> Windows Update Controller
+echo.    [MikronT] ==^> Windows Update Controller
 echo.
 exit /b
