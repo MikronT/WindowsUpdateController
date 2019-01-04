@@ -1,28 +1,34 @@
 @echo off
 chcp 65001
 
+net session>nul 2>nul
+if %errorLevel% GEQ 1 goto :startAsAdmin
+
+
+
 
 
 call :logo
-echo.^(^?^) Ви впевнені^? ^(Enter або закрийте вікно^)
-pause>nul
-
-:start
-call :logo
-echo.^(^!^) Запуск [MikronT] Windows Update Controller...
+echo.^(^i^) Windows Update Controller is running...
 >nul timeout /nobreak /t 1
 
+echo.^(^?^) Are you sure^? ^(Enter or close^)
+pause>nul
 
 
 
 
-echo.^(^>^) Виберіть дію:
-echo.     -1- Очистити дистрибутиви оновлень Windows
-echo.     -2- Вимкнути Центр оновлення Windows та видалити всі завантажені оновлення
-echo.     -3- Увімкнути Центр оновлення Windows та запустити його роботу
+
+:menu
+call :logo
+echo.^(^>^) Choose action:
+echo.     -1- Clear Windows Update distributions
+echo.     -2- Disable Windows Update Center and remove all downloaded updates
+echo.     -3- Enable Windows Update Center and launch it
+echo.
 set /p action=^> 
 
-if "%action%" NEQ "1" if "%action%" NEQ "2" if "%action%" NEQ "3" goto :start
+if "%action%" NEQ "1" if "%action%" NEQ "2" if "%action%" NEQ "3" goto :menu
 call :action%action%
 
 
@@ -30,12 +36,15 @@ call :action%action%
 
 
 call :logo
-echo.^(^!^) Роботу завершено^!
+echo.^(^i^) The work is completed^!
 >nul timeout /nobreak /t 1
 
-echo.^(^!^) Перезагрузка через 30 секунд^!
-shutdown /r /t 30
->nul timeout /t 30
+echo.^(^?^) Reload now^? ^(Enter or close^)
+pause>nul
+
+echo.^(^!^) Reboot^!
+shutdown /r /t 5
+>nul timeout /t 4
 exit
 
 
@@ -43,11 +52,8 @@ exit
 
 
 :action1
-echo.^(^!^) Видалення завантажених дистрибутивів оновлень Центра оновлення Windows...
-rd /s /q %WinDir%\SoftwareDistribution\Download
-rd /s /q %WinDir%\SoftwareDistribution\Download
-rd /s /q %WinDir%\SoftwareDistribution\Download
-rd /s /q %WinDir%\SoftwareDistribution\Download
+echo.^(^i^) Removing downloaded Windows Update Center distributions of updates...
+for /l %%i in (4,-1,1) do rd /s /q %WinDir%\SoftwareDistribution\Download
 >nul timeout /nobreak /t 1
 exit /b
 
@@ -56,39 +62,27 @@ exit /b
 
 
 :action2
-echo.^(^!^) Термінація роботи Центра оновлення Windows...
-sc stop wuauserv
-sc stop wuauserv
-sc stop wuauserv
-sc stop wuauserv
+echo.^(^i^) Terminating the Windows Update Center...
+for /l %%i in (4,-1,1) do sc stop wuauserv
 >nul timeout /nobreak /t 1
 
 
 
-echo.^(^!^) Вимкнення Центра оновлення Windows...
-sc config wuauserv start=disabled
-sc config wuauserv start=disabled
-sc config wuauserv start=disabled
-sc config wuauserv start=disabled
+echo.^(^i^) Disabling Windows Update Center...
+for /l %%i in (4,-1,1) do sc config wuauserv start=disabled
 >nul timeout /nobreak /t 1
 
 
 
-echo.^(^!^) Видалення завантажених дистрибутивів оновлень Центра оновлення Windows...
-rd /s /q %WinDir%\SoftwareDistribution\Download
-rd /s /q %WinDir%\SoftwareDistribution\Download
-rd /s /q %WinDir%\SoftwareDistribution\Download
-rd /s /q %WinDir%\SoftwareDistribution\Download
+echo.^(^i^) Removing downloaded Windows Update Center distributions of updates...
+for /l %%i in (4,-1,1) do rd /s /q %WinDir%\SoftwareDistribution\Download
 >nul timeout /nobreak /t 1
 
 
 
-echo.^(^!^) Закриття доступу до завантажених дистрибутивів оновлень Центра оновлення Windows...
-echo.>%WinDir%\SoftwareDistribution\Download
-echo.>%WinDir%\SoftwareDistribution\Download
-echo.>%WinDir%\SoftwareDistribution\Download
-echo.>%WinDir%\SoftwareDistribution\Download
->nul timeout /nobreak /t 3
+echo.^(^i^) Closing access to downloaded Windows Update Center distributions of updates directory...
+for /l %%i in (4,-1,1) do echo.>%WinDir%\SoftwareDistribution\Download
+>nul timeout /nobreak /t 1
 exit /b
 
 
@@ -96,20 +90,20 @@ exit /b
 
 
 :action3
-echo.^(^!^) Увімкнення Центра оновлення Windows...
-sc config wuauserv start=auto
-sc config wuauserv start=auto
-sc config wuauserv start=auto
-sc config wuauserv start=auto
+echo.^(^i^) Enabling Windows Update Center...
+for /l %%i in (4,-1,1) do sc config wuauserv start=auto
 >nul timeout /nobreak /t 1
 
 
 
-echo.^(^!^) Запуск роботи Центра оновлення Windows...
-sc start wuauserv
-sc start wuauserv
-sc start wuauserv
-sc start wuauserv
+echo.^(^i^) Launching Windows Update Center...
+for /l %%i in (4,-1,1) do sc start wuauserv
+>nul timeout /nobreak /t 1
+
+
+
+echo.^(^i^) Opening access to downloaded Windows Update Center distributions of updates directory...
+for /l %%i in (4,-1,1) do del /q "%WinDir%\SoftwareDistribution\Download"
 >nul timeout /nobreak /t 1
 exit /b
 
@@ -125,3 +119,12 @@ echo.
 echo.    [MikronT] ==^> Windows Update Controller
 echo.
 exit /b
+
+
+
+
+
+:startAsAdmin
+echo.Please, run as Admin!
+>nul timeout /nobreak /t 3
+exit
