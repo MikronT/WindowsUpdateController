@@ -10,7 +10,7 @@ if %errorLevel% GEQ 1 goto :startAsAdmin
 
 call :logo
 echo.^(^i^) Windows Update Controller is running...
->nul timeout /nobreak /t 1
+timeout /nobreak /t 1 >nul
 
 echo.^(^?^) Are you sure^? ^(Enter or close^)
 pause>nul
@@ -37,14 +37,14 @@ call :action%action%
 
 call :logo
 echo.^(^i^) The work is completed^!
->nul timeout /nobreak /t 1
+timeout /nobreak /t 1 >nul
 
 echo.^(^?^) Reload now^? ^(Enter or close^)
 pause>nul
 
 echo.^(^!^) Reboot^!
 shutdown /r /t 5
->nul timeout /t 4
+timeout /t 4 >nul
 exit
 
 
@@ -54,7 +54,7 @@ exit
 :action1
 echo.^(^i^) Removing downloaded Windows Update Center distributions of updates...
 for /l %%i in (4,-1,1) do rd /s /q %WinDir%\SoftwareDistribution\Download
->nul timeout /nobreak /t 1
+timeout /nobreak /t 1 >nul
 exit /b
 
 
@@ -64,25 +64,25 @@ exit /b
 :action2
 echo.^(^i^) Terminating the Windows Update Center...
 for /l %%i in (4,-1,1) do sc stop wuauserv
->nul timeout /nobreak /t 1
+timeout /nobreak /t 1 >nul
 
 
 
 echo.^(^i^) Disabling Windows Update Center...
 for /l %%i in (4,-1,1) do sc config wuauserv start=disabled
->nul timeout /nobreak /t 1
+timeout /nobreak /t 1 >nul
 
 
 
 echo.^(^i^) Removing downloaded Windows Update Center distributions of updates...
 for /l %%i in (4,-1,1) do rd /s /q %WinDir%\SoftwareDistribution\Download
->nul timeout /nobreak /t 1
+timeout /nobreak /t 1 >nul
 
 
 
 echo.^(^i^) Closing access to downloaded Windows Update Center distributions of updates directory...
 for /l %%i in (4,-1,1) do echo.>%WinDir%\SoftwareDistribution\Download
->nul timeout /nobreak /t 1
+timeout /nobreak /t 1 >nul
 exit /b
 
 
@@ -92,19 +92,19 @@ exit /b
 :action3
 echo.^(^i^) Enabling Windows Update Center...
 for /l %%i in (4,-1,1) do sc config wuauserv start=auto
->nul timeout /nobreak /t 1
+timeout /nobreak /t 1 >nul
 
 
 
 echo.^(^i^) Launching Windows Update Center...
 for /l %%i in (4,-1,1) do sc start wuauserv
->nul timeout /nobreak /t 1
+timeout /nobreak /t 1 >nul
 
 
 
 echo.^(^i^) Opening access to downloaded Windows Update Center distributions of updates directory...
 for /l %%i in (4,-1,1) do del /q "%WinDir%\SoftwareDistribution\Download"
->nul timeout /nobreak /t 1
+timeout /nobreak /t 1 >nul
 exit /b
 
 
@@ -116,7 +116,13 @@ title [MikronT] Windows Update Controller
 color 0b
 cls
 echo.
+echo.
 echo.    [MikronT] ==^> Windows Update Controller
+echo.   =========================================
+echo.     See other here:
+echo.         github.com/MikronT
+echo.
+echo.
 echo.
 exit /b
 
@@ -125,6 +131,6 @@ exit /b
 
 
 :startAsAdmin
-echo.Please, run as Admin!
->nul timeout /nobreak /t 3
+echo.^(^!^) Please, run as Admin^!
+timeout /nobreak /t 3 >nul
 exit
