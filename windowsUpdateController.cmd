@@ -19,17 +19,14 @@ pause>nul
 
 
 
-:menu
 call :logo
 echo.^(^>^) Choose action:
 echo.     -1- Clear Windows Update distributions
 echo.     -2- Disable Windows Update Center and remove all downloaded updates
 echo.     -3- Enable Windows Update Center and launch it
 echo.
-set /p action=^> 
-
-if "%action%" NEQ "1" if "%action%" NEQ "2" if "%action%" NEQ "3" goto :menu
-call :action%action%
+choice /c 123 /n /m "> "
+call :action%errorLevel%
 
 
 
