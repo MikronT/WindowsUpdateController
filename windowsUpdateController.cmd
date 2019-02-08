@@ -50,7 +50,7 @@ exit
 
 :action1
 echo.^(^i^) Removing downloaded Windows Update Center distributions of updates...
-for /l %%i in (4,-1,1) do rd /s /q %WinDir%\SoftwareDistribution\Download
+for /l %%i in (4,-1,1) do rd /s /q "%WinDir%\SoftwareDistribution\Download"
 timeout /nobreak /t 1 >nul
 exit /b
 
@@ -72,13 +72,13 @@ timeout /nobreak /t 1 >nul
 
 
 echo.^(^i^) Removing downloaded Windows Update Center distributions of updates...
-for /l %%i in (4,-1,1) do rd /s /q %WinDir%\SoftwareDistribution\Download
+for /l %%i in (4,-1,1) do rd /s /q "%WinDir%\SoftwareDistribution\Download"
 timeout /nobreak /t 1 >nul
 
 
 
 echo.^(^i^) Closing access to downloaded Windows Update Center distributions of updates directory...
-for /l %%i in (4,-1,1) do echo.>%WinDir%\SoftwareDistribution\Download
+for /l %%i in (4,-1,1) do echo.>"%WinDir%\SoftwareDistribution\Download"
 timeout /nobreak /t 1 >nul
 exit /b
 
@@ -87,6 +87,12 @@ exit /b
 
 
 :action3
+echo.^(^i^) Opening access to downloaded Windows Update Center distributions of updates directory...
+for /l %%i in (4,-1,1) do del /q "%WinDir%\SoftwareDistribution\Download"
+timeout /nobreak /t 1 >nul
+
+
+
 echo.^(^i^) Enabling Windows Update Center...
 for /l %%i in (4,-1,1) do sc config wuauserv start=auto
 timeout /nobreak /t 1 >nul
@@ -95,12 +101,6 @@ timeout /nobreak /t 1 >nul
 
 echo.^(^i^) Launching Windows Update Center...
 for /l %%i in (4,-1,1) do sc start wuauserv
-timeout /nobreak /t 1 >nul
-
-
-
-echo.^(^i^) Opening access to downloaded Windows Update Center distributions of updates directory...
-for /l %%i in (4,-1,1) do del /q "%WinDir%\SoftwareDistribution\Download"
 timeout /nobreak /t 1 >nul
 exit /b
 
@@ -115,6 +115,7 @@ cls
 echo.
 echo.
 echo.    [MikronT] ==^> Windows Update Controller
+echo.                  Beta
 echo.   ==========================================
 echo.     See other here:
 echo.         github.com/MikronT
