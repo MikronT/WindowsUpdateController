@@ -115,7 +115,7 @@ cls
 echo.
 echo.
 echo.    [MikronT] ==^> Windows Update Controller
-echo.                  Beta
+echo.                  Release v1.0
 echo.   ==========================================
 echo.     See other here:
 echo.         github.com/MikronT
